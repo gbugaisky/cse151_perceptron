@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from itertools import izip
 
@@ -62,6 +63,7 @@ def votedperceptron(trainfile, testfile):
 			else:
 				c += 1
 
+	print "Starting Error Check (This takes a while)..."
 	#get test error for voted perceptron
 	error = 0
 	linecount = 0
@@ -75,6 +77,12 @@ def votedperceptron(trainfile, testfile):
 				label = -1
 			else:
 				label = 1
+			summation = 0
+			for element in vote:
+				summation += (element[1] * math.copysign(1, np.dot(element[0], featurevec)))
+			if copysign(1, summation) != label:
+				error += 1
+	print "Error on voted perceptron:", error, "/", linecount
 
 
 def averageperceptron(trainfile, testfile):
