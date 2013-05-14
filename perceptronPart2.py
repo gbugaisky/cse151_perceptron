@@ -56,7 +56,7 @@ class oneVsAll :
         return w
     
     def perceptron(self, data, label):
-        w = np.array([0] * 784)
+        w = np.array([0] * 785)
         for d in data:
             l = d[len(d) - 1]
             featurevec = d[:-1]
@@ -64,19 +64,20 @@ class oneVsAll :
         		l = 1
             else:
         		l = -1
-            if (l * np.dot(w, featurevec)) <= 0:
-                temparray = np.array([label * x for x in featurevec])
+            if (l * np.dot(w[:-1], featurevec)) <= 0:
+                temparray = np.array([label * x for x in d])
                 w += temparray
+                w[784] = label
         return w 
 
     def match(self, test):
         labels = np.array([])
-        t = np.array(test)
+        t = np.array(test[:-1])
         for featurevec in self.c:
-            l = test[len(test)-1] #get the label
-            f = np.array(featurevec)      #discard the label
+            l = featurevec[len(featurevec)-1] #get the label
+            f = np.array(featurevec[:-1])      #discard the label
             if (np.dot(t, f)) > 0:
-               labels = np.hstack((labels, [l])); 
+               labels = np.hstack((labels, [l]))
         return labels
 
 
@@ -96,22 +97,24 @@ if __name__ == "__main__":
         for line in file:
             templine = map(int, line.split())
             label = templine[len(templine) - 1]
-            featurevec = templine[:-1]
 
             #Now we need ot see which this matches
-            matches = oVa.match(featurevec)
+            matches = oVa.match(templine)
 
             #for each match, increment the appropriate portion of the table
-            if matches == []:    ##if it's empty
+            if len(matches) == 0:    ##if it's empty
                 confusion[label][10] += 1;
             else :
                 for m in matches:
-                    confusion[label][m] += 1;
+                    if m == 0 :
+                        print "  " + str(m)
+                    confusion[label][int(m)] += 1;
 
     i = 0
+    print " \t0\t1\t2\t3\t4\t5\t6\t7\t8\t9\t-"
     for c in confusion:
-        s = str(i) + " "
+        s = str(i) + "\t"
         for b in c:
-            s = s + str(b) + " "
+            s = s + str(b) + "\t"
         print s
         i += 1
