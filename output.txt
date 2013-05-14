@@ -1,0 +1,8 @@
+Error: (Training Suite)
+Error on perceptron: 10 / 1000
+Error on voted perceptron: 13 / 1000
+Error on average perceptron: 502 / 1000
+Error: (Test Suite)
+Error on perceptron: 10 / 500
+Error on voted perceptron: 7 / 500
+Error on average perceptron: 217 / 500

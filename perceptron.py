@@ -19,7 +19,7 @@ def perceptron(trainfile, testfile):
 				temparray = [label * x for x in featurevec]
 				w = map(sum, izip(w, temparray))
 
-	print w
+	#print w
 
 	#get the error for the algorithm (Open testfile, and run)
 	error = 0
@@ -63,7 +63,7 @@ def votedperceptron(trainfile, testfile):
 			else:
 				c += 1
 
-	print "Starting Error Check (This takes a while)..."
+	#print "Starting Error Check (This takes a while)..."
 	#get test error for voted perceptron
 	error = 0
 	linecount = 0
@@ -110,7 +110,7 @@ def averageperceptron(trainfile, testfile):
 			else:
 				c += 1
 
-	print "Starting Error Check (This takes a while)..."
+	#print "Starting Error Check (This takes a while)..."
 	#get test error for average perceptron
 	error = 0
 	linecount = 0
@@ -131,4 +131,11 @@ def averageperceptron(trainfile, testfile):
 	print "Error on average perceptron:", error, "/", linecount
 
 if __name__ == "__main__":
+	print "Error: (Training Suite)"
+	perceptron(".\\hw4train.txt", ".\\hw4train.txt")
+	votedperceptron(".\\hw4train.txt", ".\\hw4train.txt")
 	averageperceptron(".\\hw4train.txt", ".\\hw4train.txt")
+	print "Error: (Test Suite)"
+	perceptron(".\\hw4train.txt", ".\\hw4test.txt")
+	votedperceptron(".\\hw4train.txt", ".\\hw4test.txt")
+	averageperceptron(".\\hw4train.txt", ".\\hw4test.txt")
