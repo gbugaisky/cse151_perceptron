@@ -81,7 +81,7 @@ def votedperceptron(trainfile, testfile):
 
 			#NOTE: copysign gives us the sign of the equation (we use 1 to fit our label)
 			for element in vote:
-				summation += (element[1] * math.copysign(1, np.dot(element[0], featurevec)))
+				summation += (element[1] * math.copysign(1, float(np.dot(element[0], featurevec))))
 			if math.copysign(1, summation) != label:
 				error += 1
 	print "Error on voted perceptron:", error, "/", linecount
@@ -90,7 +90,7 @@ def averageperceptron(trainfile, testfile):
 	#create the average perceptron classifier (var aver)
 	w = [0] * 784
 	c = 1
-	aver = [0] * 784#Blank list for holding later results
+	aver = [0.0] * 784#Blank list for holding later results
 	with open(trainfile, 'r') as file:
 		for line in file:
 			templine = map(int, line.split())
@@ -126,7 +126,7 @@ def averageperceptron(trainfile, testfile):
 				label = 1
 			
 			#do dot product and see if it equals label
-			if math.copysign(1, np.dot(aver, featurevec)) != label:
+			if math.copysign(1, (np.dot(aver, featurevec))) != label:
 				error += 1
 	print "Error on average perceptron:", error, "/", linecount
 
