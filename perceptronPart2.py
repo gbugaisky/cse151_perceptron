@@ -1,5 +1,5 @@
 import numpy as np
-
+from itertools import izip
 
 """
 The steps:
@@ -51,8 +51,7 @@ class oneVsAll :
                     i = 1
                     w = templine 
                 elif i == 1:
-                    w = np.vstack((w, templine))
-
+                   w = np.vstack((w, templine))
         return w
     
     def perceptron(self, data, label):
@@ -65,9 +64,9 @@ class oneVsAll :
             else:
         		l = -1
             if (l * np.dot(w[:-1], featurevec)) <= 0:
-                temparray = np.array([label * x for x in d])
-                w += temparray
-                w[784] = label
+                temparray = np.array([l * x for x in d])
+                w = map(sum, izip(w, temparray))
+                w[len(w)-1] = label
         return w 
 
     def match(self, test):
@@ -90,7 +89,7 @@ if __name__ == "__main__":
     """
 
     #B. Initialize the confusion matrix
-    confusion = [[0] * 11, [0]*11, [0]*11, [0]*11, [0]*11, [0]*11, [0]*11, [0]*11, [0]*11, [0]*11]
+    confusion = [[0] * 10, [0]*10, [0]*10, [0]*10, [0]*10, [0]*10, [0]*10, [0]*10, [0]*10, [0]*10, [0]*10]
    
     #C. Make the confusion matrix
     with open("hw2test.txt", 'r') as file:
@@ -102,19 +101,33 @@ if __name__ == "__main__":
             matches = oVa.match(templine)
 
             #for each match, increment the appropriate portion of the table
-            if len(matches) == 0:    ##if it's empty
-                confusion[label][10] += 1;
+            if len(matches) == 0:    #if it's empty
+                confusion[10][label] += 1;
             else :
                 for m in matches:
                     if m == 0 :
                         print "  " + str(m)
-                    confusion[label][int(m)] += 1;
+                    confusion[int(m)][label] += 1;
 
     i = 0
-    print " \t0\t1\t2\t3\t4\t5\t6\t7\t8\t9\t-"
+    print " \t0\t1\t2\t3\t4\t5\t6\t7\t8\t9"
+    totals = [0]*11
+     
+    for c in confusion:
+        i = 0
+        for b in c:
+            totals[i] += b
+            i += 1
+    
+    i = 0
     for c in confusion:
         s = str(i) + "\t"
+        j = 0
         for b in c:
-            s = s + str(b) + "\t"
+            if (totals[j] == 0) :
+                s = s + str(b) + "\t"
+            else :
+                s = s + str((float(b))/(float(totals[j])))[:7] + "\t"
+            j += 1
         print s
         i += 1
